@@ -1,9 +1,16 @@
-function App() {
-  return (
-    <div className="lookbook">
-     <h2>test connection</h2>
-    </div>
-  );
-}
+import Lookbook from "./sections/Lookbook";
 
-export default App
+const sectionRegistry = {
+  lookbook: Lookbook,
+};
+
+export default function App({ config }) {
+  const Section = sectionRegistry[config.sectionType];
+  console.log(config);
+  if (!Section) {
+    console.log(`unregistered section`);
+    return null;
+  }
+
+  return <Section config={config} />;
+}
