@@ -1,0 +1,17 @@
+.lookbook-card {
+    .lookbook-card-image {
+        height: 350px;
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .lookbook-card .lookbook-card-image {
+        height: 200px;
+    }
+}

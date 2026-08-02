@@ -15,7 +15,6 @@ export async function storefrontFetch(query, variables = {}) {
         }
     );
 
-
     const json = await response.json();
 
     if (json.errors) {

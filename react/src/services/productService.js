@@ -12,8 +12,7 @@ export async function getProducts( handles, country ) {
       return data.product;
     })
   );
-
-  console.log(products)
+  
   return products.filter(Boolean).map(product => ({
       id: product.id,
       handle: product.handle,

@@ -21,7 +21,7 @@
 
 <div
   id="lookbook-root-{{ section.id }}"
-  class="lookbook-section"
+  class="lookbook-section {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
   data-react-section
   data-config='{{ lookbook_config | strip_newlines | escape }}'
 >

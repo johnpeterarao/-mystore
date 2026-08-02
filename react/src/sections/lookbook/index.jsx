@@ -1,122 +1,61 @@
+import "./lookbook.css";
 import useFetch from "../../hooks/useFetch";
+import { getLookbook } from "../../services/lookbookService";
+import LookBookCard from "../../components/lookbookCard";
+import useEmblaCarousel from "embla-carousel-react";
 
-import {
-  getLookbook
-} from "../../services/lookbookService";
+export default function Lookbook({ config }) {
+  const handle = config?.settings?.lookbookHandle;
+  const { data: lookbook, loading, error } = useFetch(() => getLookbook(handle, config.settings.country), [handle]);
+  const [ emblaRef ] = useEmblaCarousel({ loop: true, align: "start" });
 
-
-export default function Lookbook({
-  config
-}) {
-
-  const handle =
-    config?.settings?.lookbookHandle;
-
-  console.log("COUNTRY", config.settings.country);
-
-  const {
-    data: lookbook,
-    loading,
-    error
-
-  } = useFetch(
-    () => getLookbook(handle, config.settings.country),
-    [handle]
-  );
-
-
-  console.log("LOOKBOOK STATE", {
-    handle,
-    lookbook,
-    loading,
-    error
-  });
-
-
-  if (loading) {
-    return (
-      <section
-        id={`lookbook-${config.sectionId}`}
-        className="lookbook-section"
-      >
-        Loading lookbook...
-      </section>
-    );
-  }
-
-
-  if (error) {
-    return (
-      <section
-        id={`lookbook-${config.sectionId}`}
-        className="lookbook-section"
-      >
-        Error loading lookbook.
-      </section>
-    );
-  }
-
-
-  if (!lookbook) {
-    return (
-      <section
-        id={`lookbook-${config.sectionId}`}
-        className="lookbook-section"
-      >
-        No lookbook data.
-      </section>
-    );
-  }
-
-
-  const styles = {
-
+  const sectionStyles = {
     backgroundColor:
       config.settings.backgroundColor,
-
     color:
       config.settings.textColor,
-
     paddingTop:
       `${config.settings.paddingTop}px`,
-
     paddingBottom:
       `${config.settings.paddingBottom}px`
-
   };
 
+  const textStyles = {
+    color:
+      config.settings.textColor,
+  }
 
   return (
-
-    <section
-
-      id={`lookbook-${config.sectionId}`}
-
-      className="lookbook-section"
-
-      style={styles}
-
-    >
-
-      <h2>
-        {lookbook.title}
-      </h2>
-
-
-      <p>
-        {lookbook.description}
-      </p>
-
-
-      <pre>
-        {JSON.stringify(
-          lookbook.products,
-          null,
-          2
+    <section id={`lookbook-${config.sectionId}`} className="lookbook-section" style={sectionStyles}>
+      <div className="page-width">
+        { loading && (<p> Loading lookbook...</p>)}
+        { error && (<p>Error loading lookbook.</p>)}
+        { !lookbook && (<p> No lookbook data. </p>)}
+        { (!loading && lookbook) && (
+          <>
+            <div className="lookbook-hldr">
+              <div className="lookbook-text">
+                <h2 style={textStyles}> {lookbook.title} </h2>
+                { lookbook?.description ? <p style={textStyles}> {lookbook.description} </p> : ''} 
+              </div>
+              <div className="lookbook-media">
+                <img src={lookbook.image} alt={lookbook.title} loading="lazy"/>
+              </div>
+              <div className="lookbook-products">
+                <div className="lookbook-slider" ref={emblaRef}>
+                  <div className="lookbook-products_slider lookbook-slider-track">
+                    { lookbook?.products?.map((product, ind) => (
+                      <div key={ind} className="lookbook-slide">
+                        <LookBookCard product={product} country={config.settings.country} textColor={config.settings.textColor}/>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
         )}
-      </pre>
-
-
+      </div>
     </section>
 
   );

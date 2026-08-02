@@ -1,21 +1,21 @@
 export const GET_LOOKBOOK = `
 query GetLookbook($handle: String!) {
-
-  metaobject(
-    handle:{
-      type:"lookbook",
-      handle:$handle
-    }
-  ) {
-
-    fields{
-
+  metaobject( handle: { type: "lookbook", handle: $handle }) {
+    fields {
       key
-
       value
 
+      reference {
+        ... on MediaImage {
+          image {
+            url
+            altText
+            width
+            height
+          }
+        }
+      }
     }
-
   }
 
 }
