@@ -1,0 +1,27 @@
+<div 
+  id="lookbook-root">
+</div>
+
+
+{{ 'reactcss.css' | asset_url | stylesheet_tag }}
+
+<script
+  src="{{ 'reactjs.js' | asset_url }}"
+{% schema %}
+{
+  "name": "Lookbook",
+  "settings": [
+    {
+      "type": "metaobject",
+      "id": "lookbook",
+      "label": "Select Lookbook",
+      "metaobject_type": "lookbook"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lookbook"
+    }
+  ]
+}
+{% endschema %}
