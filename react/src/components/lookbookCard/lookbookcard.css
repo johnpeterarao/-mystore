@@ -1,0 +1,28 @@
+.lookbook-card {
+    .lookbook-card-image {
+        height: 350px;
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+    }
+    h3 {
+        margin-bottom: 8px;
+        a {
+            font-family: inherit;
+            color: inherit;
+            text-decoration: none;
+        }
+    }
+    p {
+        margin: 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .lookbook-card .lookbook-card-image {
+        height: 200px;
+    }
+}

@@ -1,15 +1,14 @@
 import { createRoot } from "react-dom/client";
+import App from "./App";
 import "./style.css";
-import App from "./App.jsx";
 
+document
+  .querySelectorAll("[data-react-section]")
+  .forEach((element) => {
+    const config = JSON.parse(element.dataset.config);
+    window.selectedCountry = config.settings.country;
 
-const rootElement = document.getElementById(
-  "lookbook-root"
-);
-
-if (rootElement) {
-  createRoot(rootElement)
-    .render(
-      <App />
+    createRoot(element).render(
+      <App config={config} />
     );
-}
+  });
