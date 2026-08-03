@@ -6,7 +6,6 @@ export default function useFetch( fetchFunction, dependencies = []) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-
   useEffect(() => {
     let cancelled = false;
 
@@ -27,7 +26,6 @@ export default function useFetch( fetchFunction, dependencies = []) {
           setLoading(false);
         }
       }
-
     }
 
     execute();
@@ -37,7 +35,6 @@ export default function useFetch( fetchFunction, dependencies = []) {
     };
 
   }, dependencies);
-
 
   return {
     data,

@@ -1,4 +1,5 @@
 import "./lookbook.css";
+import { useCallback, useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch";
 import { getLookbook } from "../../services/lookbookService";
 import LookBookCard from "../../components/lookbookCard";
@@ -7,7 +8,9 @@ import useEmblaCarousel from "embla-carousel-react";
 export default function Lookbook({ config }) {
   const handle = config?.settings?.lookbookHandle;
   const { data: lookbook, loading, error } = useFetch(() => getLookbook(handle, config.settings.country), [handle]);
-  const [ emblaRef ] = useEmblaCarousel({ loop: true, align: "start" });
+  const [ emblaRef, emblaApi ] = useEmblaCarousel({ loop: true, align: "start" });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState([]);
 
   const sectionStyles = {
     backgroundColor:
@@ -25,6 +28,28 @@ export default function Lookbook({ config }) {
       config.settings.textColor,
   }
 
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    setScrollSnaps(emblaApi.scrollSnapList());
+    onSelect();
+
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+
+    return () => {
+      emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onSelect);
+    };
+  }, [emblaApi, onSelect]);
+
+
   return (
     <section id={`lookbook-${config.sectionId}`} className="lookbook-section" style={sectionStyles}>
       <div className="page-width">
@@ -36,7 +61,7 @@ export default function Lookbook({ config }) {
             <div className="lookbook-hldr">
               <div className="lookbook-text">
                 <h2 style={textStyles}> {lookbook.title} </h2>
-                { lookbook?.description ? <p style={textStyles}> {lookbook.description} </p> : ''} 
+                { lookbook?.description ? <p style={textStyles}> {lookbook.description} </p> : ''} {/* added description checker as sometimes description are empty. this prevents unwanted margins or whitespace */}
               </div>
               <div className="lookbook-media">
                 <img src={lookbook.image} alt={lookbook.title} loading="lazy"/>
@@ -46,10 +71,20 @@ export default function Lookbook({ config }) {
                   <div className="lookbook-products_slider lookbook-slider-track">
                     { lookbook?.products?.map((product, ind) => (
                       <div key={ind} className="lookbook-slide">
-                        <LookBookCard product={product} country={config.settings.country} textColor={config.settings.textColor}/>
+                        <LookBookCard product={product} textColor={config.settings.textColor}/>
                       </div>
                     ))}
                   </div>
+                </div>
+                <div className="lookbook-dots">
+                  {scrollSnaps.map((_, index) => (
+                    <button
+                      key={index}
+                      className={`lookbook-dot ${ index === selectedIndex ? "is-active" : "" }`}
+                      onClick={() => emblaApi && emblaApi.scrollTo(index)}
+                      aria-label={`Go to slide ${index + 1}`}
+                    />
+                  ))}
                 </div>
               </div>
             </div>

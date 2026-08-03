@@ -28,6 +28,29 @@
         }
     } 
 
+    .lookbook-dots {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin-top: 20px;
+    }
+
+    .lookbook-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: none;
+        background: #c4c4c4;
+        cursor: pointer;
+        padding: 0;
+        transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
+    }
+
+    .lookbook-dot.is-active {
+        background: #000;
+    }
+
 }
 
 .lookbook-slider {

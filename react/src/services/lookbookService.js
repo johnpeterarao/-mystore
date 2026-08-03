@@ -17,9 +17,7 @@ export async function getLookbook(handle, country) {
   const data = await storefrontFetch( GET_LOOKBOOK, { handle } );
 
   if (!data?.metaobject) return null;
-  console.log(data.metaobject.fields)
   const fields = normalizeFields(data.metaobject.fields);
-  console.log(fields)
   const productHandles = fields.products ? JSON.parse(fields.products) : [];
   const products = await getProducts( productHandles, country);
 

@@ -1,18 +1,18 @@
-export function formatPrice(amount, currency, country) {
+export function formatPrice(amount, currency) {
   const localeMap = {
     AU: "en-AU",
     JP: "ja-JP"
   };
 
   const price = new Intl.NumberFormat(
-    localeMap[country] || "en",
+    localeMap[window.selectedCountry] || "en",
     {
       style: "currency",
       currency,
     }
   ).format(Number(amount));
 
-  const priceSuffix = country == 'AU' ? 'AUD' : 'JPY'; 
+  const priceSuffix = window.selectedCountry == 'AU' ? 'AUD' : 'JPY'; 
 
   return `${price} ${priceSuffix}`
 }
