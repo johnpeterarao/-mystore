@@ -1,7 +1,9 @@
 import Lookbook from "./sections/Lookbook";
+import LookbookProduct from "./sections/lookbook/lookbookProduct";
 
 const sectionRegistry = {
   lookbook: Lookbook,
+  lookbookProduct: LookbookProduct
 };
 
 export default function App({ config }) {
