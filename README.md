@@ -44,3 +44,4 @@ storefront.js - This is a reusable API service call for graphql, receiving graph
 components/lookookCard/index - This is a component for every lookbook products, containing its own css file. 
 
 
+Folder structure & repository - For bigger react purposes, we make a separate git repository for it. For now, I just created a git for the whole project/assessment. For easier and faster set-up. 
